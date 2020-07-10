@@ -144,7 +144,7 @@ function getCountryWins(data, initials) {
 //             console.log (`${initials} has a total of ${testWins} wins`);
 //         } else {
 //             if ((data[i]["Away Team Initials"] === initials) && (data[i]["Away Team Goals"] > data[i]["Home Team Goals"])) {
-//                 console.log (`${initials} won this game by a score of ${data[i]["Away Team Goals"]} - ${data[i]["Home Team Goals"]}`);
+//                 console.log (`${initials} won console.log(getCountryWins(fifaData, "FRA"));console.log(getCountryWins(fifaData, "FRA")); game by a score of ${data[i]["Away Team Goals"]} - ${data[i]["Home Team Goals"]}`);
 //                 testWins++;
 //                 console.log (`${initials} has a total of ${testWins} wins`);
 //         }
@@ -169,12 +169,11 @@ function getCountryWins(data, initials) {
     return wins;
 
 };
-
+  
 console.log(getCountryWins(fifaData, "GER"));
 console.log(getCountryWins(fifaData, "FRG"));
 console.log(getCountryWins(fifaData, "FRA"));
-console.log(getCountryWins(fifaData, "BRA"));
-console.log(getCountryWins(fifaData, "USA"));
+console.log(getCountryWins(fifaData, "BRA"))
 // test code, repeating stretch 1 the "old way"
 
 
