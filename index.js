@@ -170,13 +170,13 @@ function getCountryWins(data, initials) {
 
 };
   
-console.log(getCountryWins(fifaData, "GER"));
-console.log(getCountryWins(fifaData, "FRG"));
-console.log(getCountryWins(fifaData, "FRA"));
-console.log(getCountryWins(fifaData, "BRA"))
-// test code, repeating stretch 1 the "old way"
+console.log(`Total wins for GER ${getCountryWins(fifaData, "GER")}`);
+console.log(`Total wins for FRG ${getCountryWins(fifaData, "FRG")}`);
+console.log(`Total wins for BRA ${getCountryWins(fifaData, "BRA")}`);
+console.log(`Total wins for FRA ${getCountryWins(fifaData, "FRA")}`);
+console.log(`Total wins for USA ${getCountryWins(fifaData, "USA")}`);
 
-
+console.log(`Total wins for ENG ${getCountryWins(fifaData, "ENG")}`);
 
 /* Stretch 3: Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
 
