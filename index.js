@@ -134,14 +134,49 @@ getAverageGoals(fifaData);
 Hint: Investigate your data to find "team initials"!
 Hint: use `.reduce` */
 
-// function getCountryWins(data, initials) {
-//     let startWins = 0;
-//     let wins = data.reduce (function )
-//     /* code here */
-
+function getCountryWins(data, initials) {
+    // test code, repeating stretch 1 the "old way"
+//     let testWins = 0;
+//     for (i = 0; i < data.length; i++) {
+//         if ((data[i]["Home Team Initials"] === initials) && (data[i]["Home Team Goals"] > data[i]["Away Team Goals"])) {
+//             console.log (`${initials} won this game by a score of ${data[i]["Home Team Goals"]} - ${data[i]["Away Team Goals"]}`);
+//             testWins++;
+//             console.log (`${initials} has a total of ${testWins} wins`);
+//         } else {
+//             if ((data[i]["Away Team Initials"] === initials) && (data[i]["Away Team Goals"] > data[i]["Home Team Goals"])) {
+//                 console.log (`${initials} won this game by a score of ${data[i]["Away Team Goals"]} - ${data[i]["Home Team Goals"]}`);
+//                 testWins++;
+//                 console.log (`${initials} has a total of ${testWins} wins`);
+//         }
+//     }
 // };
 
-// getCountryWins(fifaData, GER);
+
+    // end test code
+    // validates that the team GER has 33 world cup wins!!!
+
+    let startWins = 0;
+    let wins = data.reduce (function (accumulator, object) {
+        if ((object["Home Team Initials"] === initials) && (object["Home Team Goals"] > object["Away Team Goals"])){
+            accumulator++; 
+        } else {
+            if ((object["Away Team Initials"] === initials) && (object["Away Team Goals"] > object["Home Team Goals"])) {
+            accumulator++;
+            }
+        }
+        return accumulator;
+    }, startWins );
+    return wins;
+
+};
+
+console.log(getCountryWins(fifaData, "GER"));
+console.log(getCountryWins(fifaData, "FRG"));
+console.log(getCountryWins(fifaData, "FRA"));
+console.log(getCountryWins(fifaData, "BRA"));
+console.log(getCountryWins(fifaData, "USA"));
+// test code, repeating stretch 1 the "old way"
+
 
 
 /* Stretch 3: Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
