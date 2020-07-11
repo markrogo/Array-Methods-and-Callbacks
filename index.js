@@ -25,13 +25,32 @@ for (i in fifaData) {
         } else {
             console.log (`The winner was ${(fifaData[i]["Away Team Name"])}`)
         };
-        console.log (fifaData[i].City);
+       // console.log (fifaData[i].City);
         
         
     }
 }
+// redo with .filter
+const summary2014 = fifaData.filter((matches) => {
+    return ((matches.Year === 2014) && (matches.Stage === "Final"));
+});
 
-/* Task 2: Create a function called  getFinals that takes `data` as an argument and returns an array of objects with only finals data */
+console.log (`Here we go`);
+// console.log (summary2014);
+console.log ("Home team in the 2014 final was " + summary2014[0]["Home Team Name"]);
+console.log ("Away team in the 2014 final was " + summary2014[0]["Away Team Name"]);
+console.log ("Home team goals in the 2014 final was " + summary2014[0]["Home Team Goals"]);
+console.log ("Away team goals in the 2014 final was " + summary2014[0]["Away Team Goals"]);
+if ((summary2014[0]["Home Team Goals"]) > (summary2014[0]["Away Team Goals"])) {
+    console.log (`The winner was ${(summary2014[0]["Home Team Name"])}`) 
+} else {
+    console.log (`The winner was ${(summary2014[0]["Away Team Name"])}`)
+};
+
+
+
+
+/* Task 2: Create  function called  getFinals that takes `data` as an argument and returns an array of objects with only finals data */
 
 function getFinals(data) { 
     let i = 0;
@@ -44,8 +63,24 @@ function getFinals(data) {
     return finalsArray;
 };
 
+
 console.log ("Task 2: here are all the finals");
 console.log(getFinals(fifaData));
+
+// Now lets try it with a .filter
+
+function getFinalsFilter(data) { 
+    const finalsArray = data.filter((matches) => {
+        return (matches.Stage === "Final");
+    });
+    return finalsArray;
+};
+
+
+console.log ("Task 2: here are all the finals using reduce");
+console.log(getFinalsFilter(fifaData));
+
+
 
 /* Task 3: Implement a higher-order function called `getYears` that accepts the callback function `getFinals`, and returns an array called `years` containing all of the years in the dataset */
 
@@ -60,6 +95,18 @@ function getYears(data, cb) {
 };
 console.log ("task 3: here are all the years")
 console.log(getYears(fifaData, getFinals));
+
+// now lets try it with a .map
+function getYearsMap(data, cb) {
+    let cbArray = cb(data);
+    const yearsArray = cbArray.map((matches) => {
+      return [matches.Year];
+    });
+    return yearsArray;
+};
+console.log ("task 3: here are all the years using a map")
+console.log(getYearsMap(fifaData, getFinals));
+
 
 /* Task 5: Implement a higher-order function called `getWinners`, that accepts the callback function `getFinals()` and determine the winner (home or away) of each `finals` game. Return the name of all winning countries in an array called `winners` */ 
 
@@ -81,6 +128,24 @@ function getWinners(data, cb) {
 console.log ("task 5: these are the winners");
 console.log(getWinners(fifaData, getFinals));
 
+// rewrite using a forEach
+
+function getWinnersAdvanced(data, cb) {
+    let cbArray = cb(data);
+    let winners = [];
+    // console.log (cbArray);
+    cbArray.forEach((match) => {
+    if (match["Home Team Goals"] > match["Away Team Goals"]) {
+        winners.push(match["Home Team Name"]);
+    } else {
+        winners.push(match["Away Team Name"]);
+    };
+    });
+    return winners;
+};
+console.log ("task 5: these are the winners using a forEach instead");
+console.log(getWinnersAdvanced(fifaData, getFinals));
+
 /* Task 6: Implement a higher-order function called `getWinnersByYear` that accepts the following parameters and returns a set of strings "In {year}, {country} won the world cup!" 
 
 Parameters: 
@@ -92,9 +157,10 @@ function getWinnersByYear(data, winnersFunc, yearsFunc) {
     // let yearsArray =[];
     // let winnersArray = [];
     // why doesn't this code work?!?
-    let finalsEmbed = [];
-    finalsEmbed = (getFinals(data));
-    console.log (`Here's Task 6 with a copy of Task 2s array ${finalsEmbed}`);
+    // or in short, how do you log an array with object literals?!?!?
+    // let finalsEmbed = [];
+    // finalsEmbed = (getFinals(data));
+    // console.log (`Here's Task 6 with a copy of Task 2s array ${finalsEmbed}`);
     // end broken code
     let returnArray = [];
     let winnersArray = winnersFunc(data, getFinals);
@@ -107,13 +173,29 @@ function getWinnersByYear(data, winnersFunc, yearsFunc) {
 
 console.log(getWinnersByYear(fifaData, getWinners, getYears));
 
+// I'm not really sure how to make this one array out of two arrays using a forEach
+// function getWinnersByYearForEach(data, winnersFunc, yearsFunc) {
+//   let returnArray = [];
+//     let winnersArray = winnersFunc(data, getFinals);
+//     let yearsArray = yearsFunc(data, getFinals);
+//     winnersArray.forEach (() => {
+//         returnArray.push (`In year ${yearsArray[year]}, the World Cup winner was ${winnersArray[year]}`)
+//     });
+//     return returnArray;
+// };
+
+// console.log(getWinnersByYearForEach(fifaData, getWinners, getYears));
+
 /* Task 7: Write a function called `getAverageGoals` that accepts a parameter `data` and returns the the average number of home team goals and away team goals scored per match (Hint: use .reduce and do this in 2 steps) */
 
 function getAverageGoals(data) {
     let initialValue = 0;
-    let total = data.reduce (function (accumulator, object){
+    let homeTotal = data.reduce (function (accumulator, object){
         return accumulator + object["Home Team Goals"]; }, initialValue);
-    console.log (`The average number of home team goals is ${total / data.length}`);
+    console.log (`The average number of home team goals is ${homeTotal / data.length}`);
+    let awayTotal = data.reduce (function (accumulator, object){
+        return accumulator + object["Away Team Goals"]; }, initialValue);
+    console.log (`The average number of away team goals is ${awayTotal / data.length}`);
 
     // test code -- SEEMS TO PROVE THE REDUCE IS WORKING AS THEY MATCH!
     // let testTotal = 0;
@@ -180,13 +262,34 @@ console.log(`Total wins for ENG ${getCountryWins(fifaData, "ENG")}`);
 
 /* Stretch 3: Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
 
-function getGoals(/* code here */) {
+function getGoals(data) {
+    let finalsArray = [];
+    let allTheScores = [];
+    finalsArray = (getFinals (data));
+    console.log (`here are the finals in Stretch 3`);
+        console.log (finalsArray);
+    // again why doesn't the next line of code work.
+    // console.log(`Here's all the finals in an array for stretch 3 ${(finalsArray)}`);
 
-    /* code here */
+    // this will put all the team and score pairs in a single array of objects
+    for (i in finalsArray) {
+        let homeScoreOjbect = {};
+        let awayScoreOjbect = {};
+        homeScoreOjbect.team = (finalsArray[i]["Home Team Name"]);
+        homeScoreOjbect.score =(finalsArray[i]["Home Team Goals"]);
+        awayScoreOjbect.team = (finalsArray[i]["Away Team Name"]);
+        awayScoreOjbect.score =(finalsArray[i]["Away Team Goals"]);
+        allTheScores.push (homeScoreOjbect);
+        allTheScores.push (awayScoreOjbect);
+    }
+    console.log (allTheScores);
+    
+    // have "king of the hill" where the best total bubbles to the top
+    
 
 };
 
-getGoals();
+getGoals(fifaData);
 
 
 /* Stretch 4: Write a function called badDefense() that accepts a parameter `data` and calculates the team with the most goals scored against them per appearance (average goals against) in the World Cup finals */
