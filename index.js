@@ -304,11 +304,11 @@ function getGoals(data) {
         } , []);
 
     let appKeys = Object.keys(appearances);
-    console.log ("app keys");
-    console.log (appKeys);
+    // console.log ("app keys");
+    // console.log (appKeys);
     let appValues = Object.values(appearances);
-    console.log ("app values");
-    console.log (appValues);
+    // console.log ("app values");
+    // console.log (appValues);
 
     // this catalogs all the goals teams have scored in world cup finals; it's been tested and works
     // but it returns a weird array of objects
@@ -325,35 +325,38 @@ function getGoals(data) {
         // console.log (goals);
 
     let goalValues = Object.values (goals);
-    console.log ("goal values");
-    console.log (goalValues);
+    // console.log ("goal values");
+    // console.log (goalValues);
 
     // this creates an array of averages, perhaps could be mapped?? 
-    let averages= [];
+    let teamAverages= [];
     for (let j = 0; j < appKeys.length; j++) {
         let avg = (goalValues[j]/appValues[j]);
-        console.log (avg);
-        let object = {"team" : appKeys[j], "averageGoals" : avg };
-        averages.push(object);
+        // console.log (avg);
+        let object = {"team" : appKeys[j], "avgGoals" : avg };
+        // console.log (object);
+        teamAverages.push(object);
     };
- 
-    console.log (averages);
+    console.log ("averages of goals scored in finals");
+    console.log (teamAverages);
 
 
  let topAverage = 0;
- let topScoreTeams = [];
- for (i = 0; i < averages.length; i++) {
-     if (averages[i].averageGoals > topAverage) {
+ let topScoreTeams = [""];
+ for (let k = 0; k < teamAverages.length; k++) {
+     if (teamAverages[k].avgGoals > topAverage) {
             topScoreTeams = [];
-            topAverage = (averages[i].averageGoals);
+            topAverage = (teamAverages[k].avgGoals);
             console.log (topAverage);
-            console.log (topScoreTeams);
             console.log ("greater than");
-            topScoreTeams.push (averages[i].team); 
+            
+            topScoreTeams.push (teamAverages[k].team); 
+            console.log (topScoreTeams);
           
-        } else if (averages[i].averageGoals = topAverage) {
-            console.log (averages[i].averageGoals);
-            topScoreTeams.push (averages[i].team);
+        } 
+        else if (teamAverages[k].avgGoals === topAverage) {
+            console.log (teamAverages[k].avgGoals);
+            topScoreTeams.push (teamAverages[k].team);
             console.log (topScoreTeams);
         };
          
@@ -363,6 +366,7 @@ function getGoals(data) {
     console.log ("The top scoring teams");
     console.log (topScoreTeams);   
  };
+
 
 
  
