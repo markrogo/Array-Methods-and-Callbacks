@@ -77,7 +77,7 @@ function getFinalsFilter(data) {
 };
 
 
-console.log ("Task 2: here are all the finals using reduce");
+console.log ("Task 2: here are all the finals using filter");
 console.log(getFinalsFilter(fifaData));
 
 
@@ -100,6 +100,9 @@ console.log(getYears(fifaData, getFinals));
 function getYearsMap(data, cb) {
     let cbArray = cb(data);
     const yearsArray = cbArray.map((matches) => {
+
+
+        
       return [matches.Year];
     });
     return yearsArray;
@@ -266,15 +269,17 @@ function getGoals(data) {
     let finalsArray = [];
     let allTheScores = [];
     finalsArray = (getFinals (data));
-    console.log (`here are the finals in Stretch 3`);
-        console.log (finalsArray);
+ 
+   
     // again why doesn't the next line of code work.
     // console.log(`Here's all the finals in an array for stretch 3 ${(finalsArray)}`);
 
     // this will put all the team and score pairs in a single array of objects
+    // it feels like this could be a good target for a .map
     for (i in finalsArray) {
         let homeScoreOjbect = {};
         let awayScoreOjbect = {};
+        
         homeScoreOjbect.team = (finalsArray[i]["Home Team Name"]);
         homeScoreOjbect.score =(finalsArray[i]["Home Team Goals"]);
         awayScoreOjbect.team = (finalsArray[i]["Away Team Name"]);
@@ -283,11 +288,89 @@ function getGoals(data) {
         allTheScores.push (awayScoreOjbect);
     }
     console.log (allTheScores);
+
+
+
+    // this catalogs the teams by appearances in the world cup finals; it's been tested and works
+    // but it returns a weird array of objects
     
+    const appearances = allTheScores.reduce ( (tally, teamName) => {
+        if (!tally[teamName.team]) {
+            tally[teamName.team] = 1;
+        } else {
+            tally[teamName.team] = tally[teamName.team] + 1;
+        }
+        return tally;
+        } , []);
+
+    let appKeys = Object.keys(appearances);
+    console.log ("app keys");
+    console.log (appKeys);
+    let appValues = Object.values(appearances);
+    console.log ("app values");
+    console.log (appValues);
+
+    // this catalogs all the goals teams have scored in world cup finals; it's been tested and works
+    // but it returns a weird array of objects
+    const goals = allTheScores.reduce ( (tally, teamName) => {
+        if (!tally[teamName.team]) {
+            tally[teamName.team] = teamName.score;
+        } else {
+            tally[teamName.team] = tally[teamName.team] + teamName.score;
+        }
+        return tally;
+        } , []);
+  
+        // console.log (appearances);
+        // console.log (goals);
+
+    let goalValues = Object.values (goals);
+    console.log ("goal values");
+    console.log (goalValues);
+
+    // this creates an array of averages, perhaps could be mapped?? 
+    let averages= [];
+    for (let j = 0; j < appKeys.length; j++) {
+        let avg = (goalValues[j]/appValues[j]);
+        console.log (avg);
+        let object = {"team" : appKeys[j], "averageGoals" : avg };
+        averages.push(object);
+    };
+ 
+    console.log (averages);
+
+
+ let topAverage = 0;
+ let topScoreTeams = [];
+ for (i = 0; i < averages.length; i++) {
+     if (averages[i].averageGoals > topAverage) {
+            topScoreTeams = [];
+            topAverage = (averages[i].averageGoals);
+            console.log (topAverage);
+            console.log (topScoreTeams);
+            console.log ("greater than");
+            topScoreTeams.push (averages[i].team); 
+          
+        } else if (averages[i].averageGoals = topAverage) {
+            console.log (averages[i].averageGoals);
+            topScoreTeams.push (averages[i].team);
+            console.log (topScoreTeams);
+        };
+         
+        };
+    
+    console.log ("The top average is " + topAverage);
+    console.log ("The top scoring teams");
+    console.log (topScoreTeams);   
+ };
+
+
+ 
+
     // have "king of the hill" where the best total bubbles to the top
     
 
-};
+
 
 getGoals(fifaData);
 
